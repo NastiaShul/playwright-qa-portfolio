@@ -1,0 +1,28 @@
+{
+  "name": "playwright-qa-portfolio",
+  "version": "1.0.0",
+  "description": "Playwright test automation framework: UI (Page Object Model), GraphQL API and SEO tests for a multi-locale sports media platform",
+  "type": "module",
+  "scripts": {
+    "test": "npx playwright test",
+    "test:ui": "npx playwright test tests/uiRegression",
+    "test:api": "npx playwright test tests/api --project=chromium",
+    "test:seo": "npx playwright test tests/seo --project=chromium",
+    "report": "npx allure generate --clean allure-results && npx allure open allure-report",
+    "format": "npx prettier --write tests src pages"
+  },
+  "keywords": ["playwright", "test-automation", "qa", "page-object-model", "graphql", "seo"],
+  "license": "MIT",
+  "devDependencies": {
+    "@faker-js/faker": "^7.6.0",
+    "@playwright/test": "^1.64.0",
+    "@types/node": "^26.6.4",
+    "allure-commandline": "^2.21.0",
+    "allure-playwright": "^2.15.1",
+    "node-html-parser": "^9.0.7",
+    "prettier": "2.8.4"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.3"
+  }
+}

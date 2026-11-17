@@ -1,0 +1,41 @@
+name: Playwright tests
+
+on:
+  workflow_dispatch:
+    inputs:
+      suite:
+        description: "Test folder to run"
+        type: choice
+        options: [tests/uiRegression, tests/api, tests/seo]
+        default: tests/seo
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      BASE_URL: ${{ vars.BASE_URL }}
+      API_URL: ${{ vars.API_URL }}
+      FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
+      USER_EMAIL: ${{ secrets.USER_EMAIL }}
+      USER_PASSWORD: ${{ secrets.USER_PASSWORD }}
+      USER2_EMAIL: ${{ secrets.USER2_EMAIL }}
+      USER2_PASSWORD: ${{ secrets.USER2_PASSWORD }}
+      ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
+      ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+      EMPTY_USER_EMAIL: ${{ secrets.EMPTY_USER_EMAIL }}
+      EMPTY_USER_PASSWORD: ${{ secrets.EMPTY_USER_PASSWORD }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install
+      - run: npx playwright install --with-deps chromium
+      - run: npx playwright test ${{ inputs.suite }} --project=chromium
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 14
