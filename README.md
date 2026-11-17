@@ -29,6 +29,7 @@ A test automation framework I built and maintain for a multi-locale sports media
 | `src/` | Constants, locales, helpers (UI auth via storage, A/B test helper) |
 | `test-cases/` | Markdown test cases the automated tests are generated from / linked to |
 | `global-setup.js` | Logs in test users once via API and caches tokens for UI and API tests |
+| `.claude/skills/` | AI agent skills (Claude Code) that automate the QA workflow — see below |
 
 ## Highlights
 
@@ -37,6 +38,18 @@ A test automation framework I built and maintain for a multi-locale sports media
 - **Lightweight SEO checks**: public pages are fetched without a browser (~0.3–1.5 s per page instead of ~10 s), which also fixed CI pods running out of memory.
 - **Resilience**: retries, trace/video on failure, network-error tolerant SEO page object.
 - **Mobile coverage**: UI suites also run on a mobile device profile.
+
+## AI-assisted QA workflow
+
+The `.claude/skills/` folder contains agent skills I wrote to speed up test design and maintenance with Claude Code + MCP servers (Jira, TestRail, GitLab, Playwright):
+
+- **jira-to-md / testrail-to-md** — turn a Jira ticket or TestRail case into a structured markdown test case
+- **md-to-playwright / testrail-to-playwright** — generate a Playwright spec from a test case, discovering locators in a live browser and reusing Page Objects
+- **seo-to-playwright** — generate SEO test cases and specs from a requirements spreadsheet row
+- **playwright-self-healing** — analyze a failing test, find the root cause (locator, timing, data) and verify the fix
+- **jira-mr-code-analyst** — find merge requests linked to a ticket and produce a QA-focused impact analysis
+- **qa-review-test-aligner / jira-qa-workflow** — compare code changes with existing test cases, find coverage gaps and chain the whole flow
+- **api-queries-sync** — keep GraphQL queries in tests in sync with the frontend repository
 
 ## Running
 
